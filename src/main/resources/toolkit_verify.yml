@@ -100,3 +100,8 @@ toolkit-trello-create_card:
   - card_desc
 toolkit-list-parallel_execute:
   - tasks
+toolkit-argo-workflows:
+  - namespace
+toolkit-argo-workflow_detail:
+  - namespace
+  - workflow_name

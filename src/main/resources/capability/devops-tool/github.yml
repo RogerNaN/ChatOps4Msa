@@ -75,8 +75,8 @@ low_code:
         - toolkit-flow-if:
             condition: ${in_range}
             false:
-            - toolkit-discord-warning:
-                text: "[WARNING] sorry, the number of activities must be between 1 and 5."
+              - toolkit-discord-warning:
+                  text: "[WARNING] sorry, the number of activities must be between 1 and 5."
         - toolkit-info-get:
             system: bookinfo
             service: ${service_name}
@@ -406,7 +406,7 @@ low_code:
                   text: ===================================================
 
     - name: set-github-issue
-      parameter: 
+      parameter:
         service_name: service name
         issue_title: issue title
         issue_message: issue message
@@ -509,16 +509,16 @@ low_code:
             todo:
               - toolkit-list-parallel_execute:
                   tasks:
-#                    - get-github-service_recent_events:
-#                        service_name: ${service_name}
-#                        number_of_activity: 1
+                    #                    - get-github-service_recent_events:
+                    #                        service_name: ${service_name}
+                    #                        number_of_activity: 1
                     - set-github-issue:
                         service_name: ${service_name}
                         issue_title: ${issue_title}
                         issue_message: ${issue_message}
-#                    - get-github-service_recent_activity:
-#                        service_name: ${service_name}
-#                        number_of_activity: 1
+                    #                    - get-github-service_recent_activity:
+                    #                        service_name: ${service_name}
+                    #                        number_of_activity: 1
                     - set-github-trello_issue:
                         service_name: ${service_name}
                         issue_title: ${issue_title}
@@ -614,3 +614,43 @@ low_code:
                         title: "[${i}] The recent activity of ${github_repository}"
                         color: green
                         field_json: ${json}
+
+    - name: get-github-argo_workflows
+      parameter:
+        namespace: namespace
+      description: |
+        Create issues in the repo of services with dependency risks.
+      access:
+        protected:
+          - Supervisor
+          - Team_Member
+      body:
+        - toolkit-argo-workflows:
+            namespace: ${namespace}
+            assign: workflows_list
+        - toolkit-discord-embed:
+            title: Your workflows in the namespace_${namespace}
+            color: green
+            field_json: "{\"namespace\": \"${namespace}\", \"workflows_list\": \"${workflows_list}\"}"
+
+    - name: get-github-argo_workflow_detail
+      parameter:
+        namespace: namespace
+        workflow_name: workflow_name
+      description: |
+        Workflow Detail
+      access:
+        protected:
+          - Supervisor
+          - Team_Member
+      body:
+        - toolkit-argo-workflow_detail:
+            namespace: ${namespace}
+            workflow_name: ${workflow_name}
+            assign: workflow_detail
+        - toolkit-discord-embed:
+            title: Your workflows in the namespace_${namespace}
+            color: green
+            field_json: "{\"namespace\": \"${namespace}\", \"workflow_name\": \"${workflow_name}\"}"
+        - toolkit-discord-text:
+            text: ${workflow_detail}

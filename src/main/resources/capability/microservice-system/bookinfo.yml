@@ -43,6 +43,8 @@ capability:
   - set-github-issue_sync_trello
   - get-prometheus-alert_rule
   - get-github-service_recent_events
+  - get-github-argo_workflows
+  - get-github-argo_workflow_detail
 #  - get-github-code_network_graph
   - monitor-prometheus-service_health
   - monitor-prometheus-grafana_overview
