@@ -74,7 +74,7 @@ public class LlmToolkit {
             }
 
             JSONArray messageArray = new JSONArray(chatRecord.messages);
-            System.out.println(fullPrompt);
+            //System.out.println(fullPrompt);
             String response = llmService.callAPIFromOutside(messageArray);
 
             JSONObject assistantMessage = new JSONObject();

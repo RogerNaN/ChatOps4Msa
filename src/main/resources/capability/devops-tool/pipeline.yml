@@ -1,0 +1,33 @@
+info:
+  version: 1.0.0
+  title: pipeline
+  description: Use an LLM to generate a pipeline.
+
+low_code:
+  operation:
+    - name: get-pipeline-pipeline_suggestion
+      parameter:
+        structure: Project directory structure or GutHub URL
+        dockerfile: Dockerfile
+        process: CI/CD process(like test->bulid->deploy)
+      description: |
+        Just echo a message to Discord
+      access: public # all users can execute the operation
+      body:
+        - toolkit-llm-call:
+            prompt: |
+              專案目錄結構如下:
+              ${structure}
+              Dockerfile如下:
+              ${dockerfile}
+              想執行的流程如下:
+              ${process}
+            prompt_template: cicd_pipeline
+            assign: response
+        - toolkit-discord-text: # return to Discord
+            text: |
+               建議架構:
+               ${response}
+            assign: pipeline
+        - toolkit-flow-return:
+            return: ${message}
