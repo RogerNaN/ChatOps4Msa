@@ -59,3 +59,4 @@ capability:
   - monitor-prometheus-service_error
   - get-github-info_of_service_branch
   - get-pipeline-pipeline_suggestion
+  - get-pipeline-pipeline_modifications
