@@ -15,16 +15,42 @@ low_code:
             text: Today is ${toolkit-time-today}
 
   operation:
+#    - name: get-example-echo_message
+#      parameter:
+#        message: text message # get from Discord
+#      description: |
+#        Just echo a message to Discord
+#      access: public # all users can execute the operation
+#      body:
+#        - toolkit-discord-text: # return to Discord
+#            text: you say `${message}`
+#            assign: custom_variable # Declare a new variable
     - name: get-example-echo_message
       parameter:
+        structure: project directory structure
         message: text message # get from Discord
+        process: ci/cd process(like test->bulid->deploy)
       description: |
         Just echo a message to Discord
       access: public # all users can execute the operation
       body:
+        - toolkit-llm-call:
+            prompt: |
+              專案目錄結構如下:
+              ${structure}
+              Dockerfile如下:
+              ${message}
+              想執行的流程如下:
+              ${process}
+            prompt_template: cicd_pipeline
+            assign: response
         - toolkit-discord-text: # return to Discord
-            text: you say `${message}`
+            text: |
+                  建議架構:
+                  ${response}
             assign: custom_variable # Declare a new variable
+        - toolkit-flow-return:
+            return: ${message}
     #newFuntion
     - name: get-example-hello_message
       parameter:

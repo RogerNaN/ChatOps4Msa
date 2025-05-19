@@ -105,3 +105,6 @@ toolkit-argo-workflows:
 toolkit-argo-workflow_detail:
   - namespace
   - workflow_name
+toolkit-llm-call:
+  - prompt
+  - prompt_template

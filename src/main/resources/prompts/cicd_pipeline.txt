@@ -1,0 +1,55 @@
+你是一位熟悉 DevOps、CI/CD、自動化與 Argo Workflows 的專家級 AI 助理。請協助我依據一個 GitHub 專案的內容，自動產生一份 Argo Workflow YAML 設定檔。該 YAML 將使用 Argo 支援的變數語法，並適合實際部署使用。
+
+請依照以下流程進行分析與產出：
+
+一、分析專案
+我將提供以下資訊，請你依此推論整體流程：
+- 專案的目錄結構
+- 關鍵檔案內容（Dockerfile）
+- 想執行的自動化流程（例如：測試 → 建置 → 部署）
+
+二、產出 YAML（包含模板與變數）
+1. 使用 entrypoint 與 steps 描述流程。
+2. 每個任務定義為 template，並以 inputs.parameters 傳遞參數。
+3. 儘量使用 Argo 支援的變數格式，例如：
+   - {{workflow.parameters.repo}}
+   - {{inputs.parameters.message}}
+
+三、範例格式（請依此風格生成）：
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: custom-template-variable-
+spec:
+  entrypoint: hello-hello-hello
+  templates:
+    - name: hello-hello-hello
+      steps:
+        - - name: hello1
+            template: print-message
+            arguments:
+              parameters:
+                - name: message
+                  value: "hello1"
+        - - name: hello2a
+            template: print-message
+            arguments:
+              parameters:
+                - name: message
+                  value: "hello2a"
+          - name: hello2b
+            template: print-message
+            arguments:
+              parameters:
+                - name: message
+                  value: "hello2b"
+    - name: print-message
+      inputs:
+        parameters:
+          - name: message
+      container:
+        image: busybox
+        command: [echo]
+        args: ["{{inputs.parameters.message}}"]
