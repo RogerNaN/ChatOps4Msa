@@ -13,8 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.List;
 
 /**
  * For ease of invocation by the Capability Orchestrator,
@@ -34,17 +40,27 @@ public class DiscordToolkit extends ToolkitFunction {
     /**
      * general text message
      */
-    public void toolkitDiscordText(String text) throws InterruptedException {
-        //Thread.sleep(5000);
-        double lastResult = mathToolkit.getLastResult();
-        String messageWithResult = text + lastResult;
-//        if(lastResult!=0.0){
-//            jdaService.sendChatOpsChannelMessage(messageWithResult);
-//        }
-//        else{
-//            jdaService.sendChatOpsChannelMessage(text);
-//        }
-        jdaService.sendChatOpsChannelMessage(text);
+//    public void toolkitDiscordText(String text) throws InterruptedException {
+//        //Thread.sleep(5000);
+//        double lastResult = mathToolkit.getLastResult();
+//        String messageWithResult = text + lastResult;
+////        if(lastResult!=0.0){
+////            jdaService.sendChatOpsChannelMessage(messageWithResult);
+////        }
+////        else{
+////            jdaService.sendChatOpsChannelMessage(text);
+////        }
+//        jdaService.sendChatOpsChannelMessage(text);
+//    }
+    public void toolkitDiscordText(String text) throws IOException {
+        if (text.length() <= 2000) {
+            jdaService.sendChatOpsChannelMessage(text);
+        } else {
+            // 改用傳送檔案方式
+            String filename = "pipeline.yaml";
+            InputStream input = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
+            jdaService.sendChatOpsChannelFile(filename, input);
+        }
     }
 
     public String toolkitDiscordGet(String text) {
