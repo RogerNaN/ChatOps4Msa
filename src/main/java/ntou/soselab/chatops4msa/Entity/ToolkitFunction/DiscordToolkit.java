@@ -53,7 +53,7 @@ public class DiscordToolkit extends ToolkitFunction {
 //        jdaService.sendChatOpsChannelMessage(text);
 //    }
     public void toolkitDiscordText(String text) throws IOException {
-        if (text.length() <= 2000) {
+        if (text.length() <= 1000) {
             jdaService.sendChatOpsChannelMessage(text);
         } else {
             // 改用傳送檔案方式
